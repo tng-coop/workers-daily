@@ -96,5 +96,7 @@
     <button onclick="clearData()">Clear Name and Content</button>
     <br>
     <a id="mailtoLink" href="#" style="margin-top: 10px; display: inline-block;">Send Report via Email</a>
+    <br>
+    <a href="https://lists.mayfirst.org/mailman/listinfo/workers-daily" target="_blank" style="margin-top: 20px; display: inline-block;">List Info</a>
 </body>
 </html>
