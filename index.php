@@ -55,21 +55,23 @@
                 document.getElementById('defaultContent').value = defaultContent;
             }
 
-            // Update the mailto link
-            const mailtoLink = `mailto:workers-daily@lists.mayfirst.org?subject=${encodeURIComponent(subjectLine)}&body=${encodeURIComponent(defaultContent || '')}`;
-            document.getElementById('mailtoLink').href = mailtoLink;
-            document.getElementById('mailtoLink').innerText = 'Prepare a Blank Email with Subject Line and Content';
         }
 
-        // Handle the form submission to set the user's name and default content
-        function handleFormSubmit(event) {
-            event.preventDefault(); // Prevent the default form submission
-            const userName = document.getElementById('name').value;
-            const defaultContent = document.getElementById('defaultContent').value;
-            setCookie('userName', userName, 365); // Store name for 365 days
-            setCookie('defaultContent', defaultContent, 365); // Store default content for 365 days
-            updateSubjectLineAndMailto(); // Update with the new name and content
-        }
+    // Refactored save function
+    function saveNameAndContent() {
+        const userName = document.getElementById('name').value;
+        const defaultContent = document.getElementById('defaultContent').value;
+        setCookie('userName', userName, 365); // Store name for 365 days
+        setCookie('defaultContent', defaultContent, 365); // Store default content for 365 days
+        updateSubjectLineAndMailto(); // Update with the new name and content
+    }
+
+    // Handle the form submission using the new save function
+    function handleFormSubmit(event) {
+        event.preventDefault(); // Prevent the default form submission
+        saveNameAndContent(); // Save name and content
+    }
+
 
         // Clear the stored data and refresh the page
         function clearData() {
@@ -78,11 +80,28 @@
             window.location.reload(); // Refresh to show default state
         }
 
+        function sendEmail() {
+            saveNameAndContent();
+    const userName = getCookie('userName');
+    const defaultContent = getCookie('defaultContent') || ''; // Ensure there's a default value
+    const userDate = new Date();
+    const weekNumber = getWeekNumber(userDate);
+    const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][userDate.getDay()];
+    const formattedDate = `${userDate.toISOString().split('T')[0]} (${dayName}, Week ${weekNumber})`;
+    let subjectLine = `${formattedDate}`;
+    if (userName) {
+        subjectLine += `: ${userName}`;
+    }
+
+    const mailtoLink = `mailto:workers-daily@lists.mayfirst.org?subject=${encodeURIComponent(subjectLine)}&body=${encodeURIComponent(defaultContent)}`;
+    window.open(mailtoLink, '_blank');
+}
         // Setup event listeners and initialize on page load
         window.onload = function() {
-            updateSubjectLineAndMailto();
-            document.getElementById('dataForm').addEventListener('submit', handleFormSubmit);
-        };
+    updateSubjectLineAndMailto();
+    document.getElementById('dataForm').addEventListener('submit', handleFormSubmit);
+    document.getElementById('sendEmailButton').addEventListener('click', sendEmail); // This line is added
+};
     </script>
 </head>
 <body>
@@ -94,8 +113,8 @@
         <button type="submit">Save Name and Content</button>
     </form>
     <button onclick="clearData()">Clear Name and Content</button>
+    <button id="sendEmailButton" style="margin-top: 10px; display: inline-block;">Send Report via Email</button>
     <br>
-    <a id="mailtoLink" href="#" style="margin-top: 10px; display: inline-block;">Send Report via Email</a>
     <br>
     <a href="https://lists.mayfirst.org/mailman/listinfo/workers-daily" target="_blank" style="margin-top: 20px; display: inline-block;">List Info</a>
 </body>
