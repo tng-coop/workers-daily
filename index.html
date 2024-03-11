@@ -4,6 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Workers' Daily Report Email Subject Helper</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Hina+Mincho&display=swap" rel="stylesheet">
+    <!-- Google Font -->
+    <style>
+        /* Apply Hina Mincho font to all body text */
+        body,
+        button {
+            font-family: 'Hina Mincho', serif;
+        }
+
+        /* Remove default list styling */
+        ol,
+        li {
+            list-style-type: none;
+            /* Remove default list bullets/numbers */
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            /* Make input and textarea take the full width */
+            padding: 10px;
+            /* Add some padding for aesthetics */
+            margin-top: 5px;
+            /* Add margin on top for spacing */
+            box-sizing: border-box;
+            /* Include padding and border in the element's total width and height */
+            border: 1px solid #ccc;
+            /* Add a border */
+            border-radius: 4px;
+            /* Optional: rounds the corners */
+        }
+    </style>
     <script>
         // Cookie handling functions
         function getCookie(name) {
@@ -47,7 +80,7 @@
             let subjectLine = `${formattedDate}`;
             if (userName) {
                 subjectLine += `: ${userName}: `;
-                document.getElementById('name').value = userName;
+document.getElementById('name').value = userName;
             }
             const subjectDisplay = 'Suggested Subject Line: ' + subjectLine;
             document.getElementById('suggestedSubject').innerText = subjectDisplay;
@@ -83,7 +116,7 @@
             const formattedDate = `${userDate.toISOString().split('T')[0]} (${dayName}, Week ${weekNumber})`;
             let subjectLine = `${formattedDate}`;
             if (userName) {
-                subjectLine += `: ${userName}`;
+                subjectLine += `: ${userName}: `;
             }
 
             const mailtoLink = `mailto:workers-daily@lists.mayfirst.org?subject=${encodeURIComponent(subjectLine)}&body=${encodeURIComponent(defaultContent)}`;
@@ -98,22 +131,20 @@
 </head>
 
 <body>
-    <body>
-        <h3>Workers' Daily Report Template</h3>
-        <p>Please enter your details below to personalize your daily report emails. Your information (name and default email content) will be saved in your browser, so it will appear automatically the next time you visit this page.</p>
-        <div id="suggestedSubject">Loading suggested subject line...</div>
-        <form id="dataForm">
-            <label for="name">Enter your name:</label><br>
-            <input type="text" id="name" name="name" placeholder="Your Name" aria-label="Your Name"><br>
-            <label for="defaultContent">Enter default email content:</label><br>
-            <textarea id="defaultContent" name="defaultContent" placeholder="Default Email Content"
-                aria-label="Default Email Content"></textarea><br>
-        </form>
-        <button id="sendEmailButton" style="margin-top: 10px;">Send Report via Email</button>
-        <br><br>
-        <a href="https://lists.mayfirst.org/mailman/listinfo/workers-daily" target="_blank">Mailing List Homepage</a>
-    </body>
-    
+    <h3>Workers' Daily Report Template</h3>
+    <p>Please enter your details below to personalize your daily report emails. Your information (name and default email
+        content) will be saved in your browser, so it will appear automatically the next time you visit this page.</p>
+    <div id="suggestedSubject">Loading suggested subject line...</div>
+    <form id="dataForm">
+        <label for="name">Enter your name:</label><br>
+        <input type="text" id="name" name="name" placeholder="Your Name" aria-label="Your Name"><br>
+        <label for="defaultContent">Enter default email content:</label><br>
+        <textarea id="defaultContent" name="defaultContent" placeholder="Default Email Content"
+            aria-label="Default Email Content" rows="8"></textarea><br>
+    </form>
+    <button id="sendEmailButton" style="margin-top: 10px;">Send Report via Email</button>
+    <br><br>
+    <a href="https://lists.mayfirst.org/mailman/listinfo/workers-daily" target="_blank">Mailing List Homepage</a>
 </body>
 
 </html>
