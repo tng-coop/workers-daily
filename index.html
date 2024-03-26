@@ -59,13 +59,19 @@
             document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
         }
 
-        // Function to calculate week number
         function getWeekNumber(d) {
-            d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-            var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            d = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+            d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+            var yearStart = new Date(d.getFullYear(), 0, 1);
             var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
             return weekNo;
+        }
+
+
+        function formatDate(d) {
+            return d.getFullYear() + '-' +
+                ('0' + (d.getMonth() + 1)).slice(-2) + '-' +
+                ('0' + d.getDate()).slice(-2);
         }
 
         // Update the subject line, mailto link, and optionally the user's name and default content
@@ -76,11 +82,12 @@
             const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             const dayName = daysOfWeek[userDate.getDay()];
             const weekNumber = getWeekNumber(userDate);
-            const formattedDate = `${userDate.toISOString().split('T')[0]} (${dayName}, Week ${weekNumber})`;
+            const formattedDate = `${formatDate(userDate)} (${dayName}, Week ${weekNumber})`;
+
             let subjectLine = `${formattedDate}`;
             if (userName) {
                 subjectLine += `: ${userName}: `;
-document.getElementById('name').value = userName;
+                document.getElementById('name').value = userName;
             }
             const subjectDisplay = 'Suggested Subject Line: ' + subjectLine;
             document.getElementById('suggestedSubject').innerText = subjectDisplay;
@@ -113,7 +120,9 @@ document.getElementById('name').value = userName;
             const userDate = new Date();
             const weekNumber = getWeekNumber(userDate);
             const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][userDate.getDay()];
-            const formattedDate = `${userDate.toISOString().split('T')[0]} (${dayName}, Week ${weekNumber})`;
+            // In updateSubjectLineAndMailto and sendEmail:
+            const formattedDate = `${formatDate(userDate)} (${dayName}, Week ${weekNumber})`;
+
             let subjectLine = `${formattedDate}`;
             if (userName) {
                 subjectLine += `: ${userName}: `;
